@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Frames</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/themes/flatly/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/lib/jquery.js"></script>
+    <script src="js/lib/bootstrap.bundle.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <p>
+                    <h4>Frames</h4>
+                    <button id="testy">X</button>
+                </p>
+
+                <p>
+                    <div id="alert" class="alert alert-dismissible alert-primary" role="alert">
+                        <button type="button" class="close">&times;</button>
+                        <span id="alertText"></span>
+                    </div>
+                </p>
+                <p>
+                    <h3 id="tabTitle" class="lead">Frames</h3>
+                </p>
+
+                <img id="imgz">
+
+                <form>
+                    <div class="form-group row">
+                        <div class="col-4"></div>
+                        <div class="col-8">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input name="radio" id="radio_intro" type="radio" class="custom-control-input" value="intro">
+                                <label for="radio_intro" class="custom-control-label">Intro</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input name="radio" id="radio_outro" type="radio" class="custom-control-input" value="outro">
+                                <label for="radio_outro" class="custom-control-label">Outro</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-4 col-8">
+                            <button id="btn_submit" name="submit" type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+    <script src="js/popup.js"></script>
+</body>
+
+</html>

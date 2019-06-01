@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Frames",
+  "author": "Hellowlol",
+  "description": "Frames",
+  "homepage_url": "https://github.com/ryanwhocodes/frames_browser_extension",
+  "version": "0.0.1",
+
+  "browser_action": {
+   "default_popup": "popup.html",
+   "default_title": "Frames"
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "https://*/*",
+    "notifications"],
+
+  "content_scripts": [
+    {
+        "matches": ["http://*/*", "https://*/*", "http://192.168.68.104:32400/web/index.html", "https://app.plex.tv/desktop/*"],
+        "js": ["js/cs.js"]
+    }
+   ],
+    "background": {
+    "scripts": ["js/bg.js"],
+    "persistent": false
+  }
+
+}
