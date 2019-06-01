@@ -18,7 +18,9 @@
 
   "content_scripts": [
     {
-        "matches": ["http://*/*", "https://*/*", "http://192.168.68.104:32400/web/index.html", "https://app.plex.tv/desktop/*"],
+        "matches": ["*://*:*/web/index.html/*"
+                    "http://192.168.68.104:32400/web/index.html", 
+                    "https://app.plex.tv/desktop/*"],
         "js": ["js/cs.js"]
     }
    ],
