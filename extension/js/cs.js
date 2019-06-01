@@ -10,6 +10,7 @@ function sleep (time) {
 }
 
 function get_image() {
+    // we should check and resize image if its too big, no need to send more data then we need.
     var canvas = document.createElement("canvas");
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
 
@@ -22,24 +23,7 @@ function get_image() {
 }
 
 
-function upload(showname, season, episode, data) {
-  formdata = new FormData();
-  formdata.append("show", showname)
-  formdata.append("season", season)
-  formdata.append("episode", episode)
-  formdata.append("file", data)
-
-  fetch('https://httpbin.org/anything', {
-  		  method: 'POST',
-  		  body: formdata})
-        .then(response => console.log(response))
-        .catch(error => console.error('Error:', error))
-        .then(response => console.log('Success:', JSON.stringify(response)));
-
-  console.log('after upload')
-}
-
-
+// finish this. 
 function comm(request, sender, sendResponse) {
   console.log('comm', request)
   console.log('sender', sender)
@@ -56,8 +40,6 @@ function comm(request, sender, sendResponse) {
 
 
 chrome.runtime.onMessage.addListener(comm);
-//chrome.extension.onRequest.addListener(l2);
-
 
 
 function send_image_cb() {

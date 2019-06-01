@@ -1,12 +1,22 @@
 
 console.log('in bg')
 
+
+function get_id_from_tvmaze() {
+  //
+  // do some http calls to get tvdb or something using,
+  // tvmaze as we need that for our db.
+}
+
+
+
 function upload(showname, season, episode, data) {
   formdata = new FormData();
   formdata.append("show", showname)
   formdata.append("season", season)
   formdata.append("episode", episode)
   formdata.append("file", data)
+  formdata.append("id", '') // get this from get_id_from_tvmaze.
   /*
 
   fetch('https://httpbin.org/anything', {
@@ -25,16 +35,6 @@ function upload(showname, season, episode, data) {
 
   console.log('after upload')
 }
-
-
-
-chrome.browserAction.onClicked.addListener(function(tab) {
-  // Send a message to the active tab
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    var activeTab = tabs[0];
-    chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-  });
-});
 
 
 // Seems we have to the http in a background script cus of cors.
