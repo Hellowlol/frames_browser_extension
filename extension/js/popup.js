@@ -1,5 +1,5 @@
 
-const regex = /(.+)\s-\s([sS]\d+)\s+·\s([Ee]\d+)/gm;
+const regex = /▶?\s(.+)\s-\s([sS]\d+)\s+·\s([Ee]\d+)/gmiu;
 
 showname = ''
 tvdbid = ''
@@ -127,7 +127,17 @@ chrome.runtime.onMessage.addListener(image_cb);
 
 $("#testy").click(function(event) {
   event.preventDefault();
-  send_msg({msg:"hello from extension"})
+
+  var o
+  // change target to test
+  o = {action: "get_id",
+       target: "bg",
+     data: {show:"24",
+          season:"1",
+          episode:"2"
+       }
+    }
+  send_msg(o)
 });
 
 
@@ -144,6 +154,7 @@ $("#btn_submit").click(function(event) {
     }
   
   send_msg(o)
+
   
   console.log("testy clicked")
 
