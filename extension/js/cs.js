@@ -3,13 +3,21 @@ var N = 0
 var inital_image = ""
 var last_img = ""
 
-video = document.getElementsByTagName('video')[0]
 
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+  // stolen from https://stackoverflow.com/questions/3971841/how-to-resize-images-proportionally-keeping-the-aspect-ratio
+
+    var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+
+    return { width: srcWidth*ratio, height: srcHeight*ratio };
+ }
+
 function get_image() {
+    var video = document.getElementsByTagName('video')[0]
     // we should check and resize image if its too big, no need to send more data then we need.
     var canvas = document.createElement("canvas");
     canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
