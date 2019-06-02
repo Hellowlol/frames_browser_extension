@@ -25,8 +25,8 @@ chrome.runtime.onStartup.addListener(function () {
 
 function extract_show_season_episode(t) {
   m = regex.exec(t)
-  //console.log(m)
-  //console.log(m.length)
+  console.log(m)
+  console.log(m.length)
   if (m.length == 4) {
     console.log('Failed to find the damn name')
     return {show:m[1], season:m[2], episode:m[3]};
@@ -34,7 +34,7 @@ function extract_show_season_episode(t) {
 
 }
 
-$('#alert').hide()
+//$('#alert').hide()
 
 // to close the alert
 $("#alert").click(() => { $('#alert').hide() });
@@ -98,6 +98,8 @@ function image_cb(request, sender, sendResponse) {
   // check the event properly.
 
   if (request.image) {
+    imgz.style.width = 300
+    imgz.style.height = 150
   	imgz.src = request.image
   }
 }
@@ -127,36 +129,48 @@ chrome.runtime.onMessage.addListener(image_cb);
 
 $("#testy").click(function(event) {
   event.preventDefault();
+  console.log($('#tabTitle').text())
 
-  var o
+  k = extract_show_season_episode($('#tabTitle').text())
+
+
+  console.log(k)
   // change target to test
   o = {action: "get_id",
        target: "bg",
-     data: {show:"24",
-          season:"1",
-          episode:"2"
+       data: {show: k.show,
+          season: k.season,
+          episode: k.episode
        }
     }
+  
   send_msg(o)
+  console.log("testy clicked")
 });
 
 
 $("#btn_submit").click(function(event) {
   event.preventDefault();
   var o
+  var k
+  // fix me!
+  k = extract_show_season_episode($('#tabTitle').text())
+
+
+  console.log($('#tabTitle').text())
   // change target to test
-  o = {action: "http",
+  o = {action: "get_id",
        target: "bg",
-	   data: {show:"showname",
-		   	  season:"1",
-		   	  episode:"2"
+	     data: {show: k.show,
+		   	  season: k.season,
+		   	  episode: k.episode
 		   }
     }
   
   send_msg(o)
 
   
-  console.log("testy clicked")
+  console.log("submit clicked")
 
 
 });

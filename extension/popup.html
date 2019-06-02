@@ -8,6 +8,14 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/bootstrap.bundle.js"></script>
+    <style>
+      .el-hidden {
+        display: none
+      }
+      .el-show {
+        display: block
+      }
+    </style>
 </head>
 
 <body>
@@ -19,23 +27,18 @@
                     <h4>Frames</h4>
                     <button id="testy">X</button>
                 </p>
-
-                <p>
-                    <div id="alert" class="alert alert-dismissible alert-primary" role="alert">
-                        <button type="button" class="close">&times;</button>
-                        <span id="alertText"></span>
-                    </div>
-                </p>
-                <p>
+                 <p>
                     <h3 id="tabTitle" class="lead">Frames</h3>
                 </p>
 
-                <img id="imgz">
+                <!-- Should set some size on it..-->
+                <div>
+                  <img id="imgz">
+                </div>
 
                 <form>
                     <div class="form-group row">
-                        <div class="col-4"></div>
-                        <div class="col-8">
+                        <div class="col-12">
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input name="radio" id="radio_intro" type="radio" class="custom-control-input" value="intro">
                                 <label for="radio_intro" class="custom-control-label">Intro</label>
@@ -44,14 +47,16 @@
                                 <input name="radio" id="radio_outro" type="radio" class="custom-control-input" value="outro">
                                 <label for="radio_outro" class="custom-control-label">Outro</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="offset-4 col-8">
                             <button id="btn_submit" name="submit" type="submit" class="btn btn-primary">Submit</button>
+            
                         </div>
                     </div>
                 </form>
+                <div id="alert" class="el-hidden alert alert-dismissible alert-success" role="alert">
+                            <button type="button" class="close">&times;</button>
+                            <span id="alertText"></span>
+                </div>
+                
 
             </div>
             <!-- end col -->
