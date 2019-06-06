@@ -1,16 +1,8 @@
+const regex = /\u25B6?\s*(.+)\s-\s[sS](\d+)\s+\u00B7\s[Ee](\d+)/;
 
-const regex = /▶?\s(.+)\s-\s([sS]\d+)\s+·\s([Ee]\d+)/gmiu;
 
-showname = ''
-tvdbid = ''
-season = ''
-episode = ''
-image = ''
-var tab
-var bgtab
 imgz = document.getElementById("imgz")
-
-
+// Inject the content script.
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var tab = tabs[0];
     console.log(tab.url, tab.title);
@@ -18,34 +10,97 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     chrome.tabs.executeScript(tab.id, {file: 'js/cs.js', allFrames: true});
 });
 
-chrome.runtime.onStartup.addListener(function () {
-    console.log("ext is staring up.")
+
+
+function send_msg(ob) {
+  ob.ext = "frames"
+
+  // default action should be to send to the content script. (cs)
+  if (ob.target == undefined) {
+    ob.target == "cs"
+  }
+
+  console.debug("send_msg", ob)
+
+  if (ob.target == "cs") {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, ob, function(response) {});
+    });
+    } else {
+      chrome.runtime.sendMessage(ob);
+    }
+}
+
+/*
+if (window.location.hash == "#frames_pop") {
+
+  send_msg({target:"cs", action:"pop_open", data:{is_open:true}})
+
+}
+*/
+
+
+/*
+
+// if (request.ext == "frames" && request.action == "get_id" && request.target == "bg") 
+document.body.addEventListener("unload", function () {
+  //alert('dick')
+  send_msg({target:"cs", action:"pop_open", data:{is_open:true}})
 });
+*/
 
 
-function extract_show_season_episode(t) {
+console.log("lo from pop")
+
+function extract_show_season_episode_org(t) {
+  n = "'" + t + "'"
+  console.log(n)
   m = regex.exec(t)
   console.log(m)
-  console.log(m.length)
-  if (m.length == 4) {
-    console.log('Failed to find the damn name')
-    return {show:m[1], season:m[2], episode:m[3]};
+  if (m != null && m.length == 4) {
+    return {
+      show: m[1],
+      season: m[2],
+      episode: m[3]
+    };
+  } else {
+      console.log("Failed to find the damn name.")
   }
 
 }
 
-//$('#alert').hide()
+function extract_show_season_episode(t) {
+  m = regex.exec(t)
+  //console.log(m.length)
+  if (m != null && m.length == 4) {
+    // dunno why chrome dont like tha damn char
+    // '\u25B6'
+    if (m[1].indexOf('\u25B6') > -1) {
+        m[1] = m[1].slice(2)
+        
+    }
 
-// to close the alert
+    return {
+      show: m[1],
+      season: m[2],
+      episode: m[3]
+    };
+  } else {
+      console.log("Failed to find the damn name. " + t)
+  }
+
+}
+
 $("#alert").click(() => { $('#alert').hide() });
 
-
+/*
 const alertError = (error, message) => {
   console.log(message)
   console.log(error)
   $('#alertText').text(message)
   $('#alert').show()
 }
+*/
 
 const add_title = (tabs) => {
   currentTab = tabs[0]
@@ -70,25 +125,19 @@ if(chrome) {
 }
 
 
-// a msg should look like.
-/*
-{ext: "frames",
- target: rescipient
- action: "whwat to do"
- data:  {}}
-
-*/ 
+function show_img_cb(ob) {
+  imgz.style.width = 300
+  imgz.style.height = 150
+  imgz.src = ob
+}
 
 
 function comm(request, sender, sendResponse) {
-  if (sender.tab && request.action == "http") {
-  	//
+  if (request.ext == "frames" && request.target == "pop" && request.action == "show_image") {
+    show_img_cb(request.data.image)
 
-  } else if (sender.tab && request.action == "image"){
-    //
-  } else {
-    //
   }
+
 }
 
 
@@ -102,6 +151,8 @@ function image_cb(request, sender, sendResponse) {
     imgz.style.height = 150
   	imgz.src = request.image
   }
+
+  return true
 }
 
 
@@ -114,6 +165,8 @@ function send_msg(ob) {
 		ob.target == "cs"
 	}
 
+  console.log("send_msg", ob)
+
 	if (ob.target == "cs") {
 	  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		  chrome.tabs.sendMessage(tabs[0].id, ob, function(response) {});
@@ -123,56 +176,44 @@ function send_msg(ob) {
     }
 }
 
-// add a listener.
-chrome.runtime.onMessage.addListener(image_cb);
 
+function img_to_bs64(o) {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    var dataURL;
+    canvas.height = o.height;
+    canvas.width = o.width;
+    ctx.drawImage(o, 0, 0);
+    dataURL = canvas.toDataURL();
 
-$("#testy").click(function(event) {
-  event.preventDefault();
-  console.log($('#tabTitle').text())
+    return dataURL
 
-  k = extract_show_season_episode($('#tabTitle').text())
-
-
-  console.log(k)
-  // change target to test
-  o = {action: "get_id",
-       target: "bg",
-       data: {show: k.show,
-          season: k.season,
-          episode: k.episode
-       }
-    }
-  
-  send_msg(o)
-  console.log("testy clicked")
-});
+}
 
 
 $("#btn_submit").click(function(event) {
   event.preventDefault();
   var o
   var k
-  // fix me!
   k = extract_show_season_episode($('#tabTitle').text())
 
+  bs64_img = img_to_bs64(imgz)
+  image_type = $('input[name=radio]:checked').val()
 
-  console.log($('#tabTitle').text())
   // change target to test
-  o = {action: "get_id",
+  o = {action: "upload",
        target: "bg",
 	     data: {show: k.show,
-		   	  season: k.season,
-		   	  episode: k.episode
+		   	      season: k.season,
+		   	      episode: k.episode,
+              img: bs64_img,
+              type: image_type
 		   }
     }
   
   send_msg(o)
-
-  
-  console.log("submit clicked")
-
-
 });
 
-console.log("bg", chrome.extension.getBackgroundPage())
+
+// add a listener.
+chrome.runtime.onMessage.addListener(comm);

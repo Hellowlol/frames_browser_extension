@@ -15,6 +15,9 @@
       .el-show {
         display: block
       }
+      #imgz {
+        margin: 1px;
+      }
     </style>
 </head>
 
@@ -25,7 +28,6 @@
 
                 <p>
                     <h4>Frames</h4>
-                    <button id="testy">X</button>
                 </p>
                  <p>
                     <h3 id="tabTitle" class="lead">Frames</h3>
@@ -35,8 +37,8 @@
                 <div>
                   <img id="imgz">
                 </div>
-
-                <form>
+                <div>
+                <form id="upload_form">
                     <div class="form-group row">
                         <div class="col-12">
                             <div class="custom-control custom-radio custom-control-inline">
@@ -52,6 +54,7 @@
                         </div>
                     </div>
                 </form>
+                <div>
                 <div id="alert" class="el-hidden alert alert-dismissible alert-success" role="alert">
                             <button type="button" class="close">&times;</button>
                             <span id="alertText"></span>

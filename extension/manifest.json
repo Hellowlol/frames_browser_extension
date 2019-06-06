@@ -3,11 +3,11 @@
   "name": "Frames",
   "author": "Hellowlol",
   "description": "Frames",
-  "homepage_url": "https://github.com/ryanwhocodes/frames_browser_extension",
+  "homepage_url": "https://github.com/Hellowlol/frames_browser_extension",
   "version": "0.0.1",
 
   "browser_action": {
-   "default_popup": "popup.html",
+   "default_popup": "popup.html#frames_pop",
    "default_title": "Frames"
   },
   "permissions": [
@@ -25,7 +25,7 @@
     }
    ],
     "background": {
-    "scripts": ["js/lib/jquery.js", "js/lib/bootstrap.bundle.js","js/bg.js"],
+    "scripts": ["js/bg.js"],
     "persistent": false
   }
 

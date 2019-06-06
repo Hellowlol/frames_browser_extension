@@ -1,8 +1,6 @@
-console.log('lo from getDescription.js')
-var N = 0
-var inital_image = ""
+﻿var N = 0
 var last_img = ""
-
+var gogo = true
 
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
@@ -17,63 +15,69 @@ function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
  }
 
 function get_image() {
-    var video = document.getElementsByTagName('video')[0]
     // we should check and resize image if its too big, no need to send more data then we need.
+    var vid = document.getElementsByTagName('video')[0]
     var canvas = document.createElement("canvas");
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
+    canvas.getContext('2d').drawImage(vid, 0, 0, canvas.width, canvas.height);
     var img = document.createElement("img");
     img.src = canvas.toDataURL();
-    console.log("Inside get_image")
 
     return img
 
 }
 
 
-// finish this. 
 function comm(request, sender, sendResponse) {
-  console.log('comm', request)
-  console.log('sender', sender)
-  if (request.ext == "frames"  && request.action == "http") {
-  	//console.log('inside com before upload')
-  	//upload('showname', 's1', 'e1', 'aaaa')
 
-  } else if (sender.tab && request.action == "image"){
-    //
-  } else {
-    //
+  if (request.ext == "frames" && request.action == "get_frame" && request.target == "cs") {
+    send_image()
   }
+
 }
 
 
-chrome.runtime.onMessage.addListener(comm);
-
-
 function send_image_cb() {
-    //console.log("inside send_image_cb")
-    sleep(1).then(send_image);   
-    //console.log("done send_image_cb")
+  sleep(1).then(send_image);
 }
 
 function send_image() {
 	// sends the image back to the browser extension.
-    N++
-    console.log(N)
-    t = get_image()
-    if (last_img != t.src) {
-        last_img = t.src
-    } else {
-        console.log('same image!!')
-    }
-    
-	chrome.runtime.sendMessage({image:t.src}, function(response) {});
+  N++
+  var img
+  console.debug(N)
+  img = get_image()
+  if (last_img != img.src) {
+      last_img = img.src
+  } else {
+      console.log('same image!!')
+  }
+
+  var ob = {ext:"frames",
+            action:"show_image",
+            target:"pop",
+            data: {image:img.src}}
+
+      
+  chrome.runtime.sendMessage(ob, function(response) {});
+  //return true
 
 }
 
 // add events.
 // playing: when it starts after been stopped/paused or buffing
-video.addEventListener("playing", send_image_cb)
-video.addEventListener("timeupdate", send_image_cb)
+//video.addEventListener("playing", send_image_cb)
+//video.addEventListener("timeupdate", send_image_cb)
 // Send the inital image when the extention is opened
 send_image()
+
+if (gogo) {
+
+  video = document.getElementsByTagName('video')[0]
+  if (video) {
+    video.addEventListener("playing", send_image_cb)
+    video.addEventListener("timeupdate", send_image_cb)
+
+  }
+  
+}
+chrome.runtime.onMessage.addListener(comm);
