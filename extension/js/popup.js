@@ -215,5 +215,23 @@ $("#btn_submit").click(function(event) {
 });
 
 
+
+
 // add a listener.
 chrome.runtime.onMessage.addListener(comm);
+
+
+// this shit dont seems to work..
+/*
+chrome.tabs.onRemoved.addListener(function(tabid, removed) {
+ alert("tab closed")
+})
+
+chrome.tabs.onClose.addListener(function(tabid, removed) {
+ alert("tab closed")
+})
+
+chrome.windows.onRemoved.addListener(function(windowid) {
+ alert("window closed")
+})
+*/

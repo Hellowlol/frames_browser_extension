@@ -68,7 +68,7 @@ async function upload(showname, season, episode, id, type, data) {
 
   console.debug(formdata)
 
-  fetch('http://localhost:8888/api/upload', {
+  fetch('https://frames.servingthe.net/api/upload', {
   		  method: 'POST',
   		  body: formdata})
         .then(response => console.log(response))
