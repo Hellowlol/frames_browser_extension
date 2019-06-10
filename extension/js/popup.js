@@ -147,9 +147,10 @@ function image_cb(request, sender, sendResponse) {
   // check the event properly.
 
   if (request.image) {
-    imgz.style.width = 300
-    imgz.style.height = 150
+    //imgz.style.width = 300
+    //imgz.style.height = 150
   	imgz.src = request.image
+    
   }
 
   return true
